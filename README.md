@@ -42,3 +42,11 @@ npx playwright test --grep-invert @GAD-R01-02
 ```
 
 For more usage cases look in `package.json` scripts section.
+
+### Where to find specific things in video 'jak testowac.pl'
+
+```
+Console, powershell, grep, --%
+-
+ https://jaktestowac.pl/lesson/pw2s02l03/
+```
