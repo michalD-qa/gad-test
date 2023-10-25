@@ -6,6 +6,7 @@ export class LoginPage extends BasePage {
   userEmailInput = this.page.getByPlaceholder('Enter User Email');
   passwordInput = this.page.getByPlaceholder('Enter Password');
   loginButton = this.page.getByRole('button', { name: 'LogIn' });
+  loginErrorText = this.page.getByTestId('login-error');
 
   constructor(page: Page) {
     super(page);
