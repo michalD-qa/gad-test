@@ -1,7 +1,8 @@
+import { RegisterUser } from '../src/models/user.model';
 import { LoginPage } from '../src/pages/login.page';
 import { RegisterPage } from '../src/pages/register.page';
 import { WelcomePage } from '../src/pages/welcome.page';
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/en';
 import { expect, test } from '@playwright/test';
 
 test.describe('Verify register page', () => {
@@ -11,22 +12,21 @@ test.describe('Verify register page', () => {
     //Arrange
     const registerPage = new RegisterPage(page);
     const loginPage = new LoginPage(page);
-    const userFirstName = faker.person.firstName().replace(/[^A-Za-z]g/, '');
-    const userSecondName = faker.person.lastName();
-    const userEmail = faker.internet.email({
-      firstName: userFirstName,
-      lastName: userSecondName,
-    });
-    const userPassword = faker.internet.password();
-    await registerPage.goto();
+
+    const registerUserData: RegisterUser = {
+      userFirstName: faker.person.firstName().replace(/[^A-Za-z]g/, ''),
+      userLastName: faker.person.lastName(),
+      userEmail: '',
+      userPassword: faker.internet.password(),
+    };
+    (registerUserData.userEmail = faker.internet.email({
+      firstName: registerUserData.userFirstName,
+      lastName: registerUserData.userLastName,
+    })),
+      await registerPage.goto();
 
     //Act
-    await registerPage.registerUser(
-      userFirstName,
-      userSecondName,
-      userEmail,
-      userPassword,
-    );
+    await registerPage.registerUser(registerUserData);
     const expectedAlertText = 'User created';
 
     //Assert
@@ -36,7 +36,10 @@ test.describe('Verify register page', () => {
     expect.soft(titleLogin).toContain('Login');
 
     //Assert
-    await loginPage.loginUser(userEmail, userPassword);
+    await loginPage.loginUser(
+      registerUserData.userEmail,
+      registerUserData.userPassword,
+    );
 
     const welcomePage = new WelcomePage(page);
     const titleWelcome = await welcomePage.title();
