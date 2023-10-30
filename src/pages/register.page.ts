@@ -4,6 +4,7 @@ import { Page } from '@playwright/test';
 
 export class RegisterPage extends BasePage {
   url = '/register.html';
+
   constructor(page: Page) {
     super(page);
   }
@@ -14,6 +15,7 @@ export class RegisterPage extends BasePage {
   private password = this.page.getByTestId('password-input');
   private registerButton = this.page.getByTestId('register-button');
   alertPopUp = this.page.getByTestId('alert-popup');
+  emailErrorText = this.page.locator('#octavalidate_email');
 
   async registerUser(registerUserData: RegisterUser): Promise<void> {
     await this.firstName.fill(registerUserData.userFirstName);
