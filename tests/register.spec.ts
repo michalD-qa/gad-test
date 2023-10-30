@@ -11,7 +11,7 @@ test.describe('Verify register page', () => {
     //Arrange
     const registerPage = new RegisterPage(page);
     const loginPage = new LoginPage(page);
-    const userFirstName = faker.person.firstName();
+    const userFirstName = faker.person.firstName().replace(/[^A-Za-z]g/, '');
     const userSecondName = faker.person.lastName();
     const userEmail = faker.internet.email({
       firstName: userFirstName,
