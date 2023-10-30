@@ -1,14 +1,6 @@
-export const testUser1 = {
+import { LoginUser } from '../models/user.model';
+
+export const testUser1: LoginUser = {
   userEmail: (process.env.USER_EMAIL as string) ?? 'NOT_SET',
   userPassword: (process.env.USER_PASSWORD as string) ?? 'NOT_SET',
 };
-
-// export const testUserMy: userData = {
-//   email: 'dfdf',
-//   password: 'dfdf',
-// };
-
-// interface userData {
-//   email: string;
-//   password: string;
-// }

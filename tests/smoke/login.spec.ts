@@ -1,3 +1,4 @@
+import { LoginUser } from '../../src/models/user.model';
 import { LoginPage } from '../../src/pages/login.page';
 import { WelcomePage } from '../../src/pages/welcome.page';
 import { testUser1 } from '../../src/test-data/user.data';
@@ -11,12 +12,9 @@ test.describe('Verify login page', () => {
     const loginPage = new LoginPage(page);
     const welcomePage = new WelcomePage(page);
 
-    const userName = testUser1.userEmail;
-    const password = testUser1.userPassword;
-    await loginPage.goto();
-
     //Act
-    await loginPage.loginUser(userName, password);
+    await loginPage.goto();
+    await loginPage.loginUser(testUser1);
     const title = await welcomePage.title();
 
     //Assert
@@ -28,12 +26,15 @@ test.describe('Verify login page', () => {
     //Arrange
     const loginPage = new LoginPage(page);
 
-    const userName = '3434';
-    const password = testUser1.userPassword;
+    const loginUserData: LoginUser = {
+      userEmail: testUser1.userEmail,
+      userPassword: 'incorrectPassword',
+    };
+
     await loginPage.goto();
 
     //Act
-    await loginPage.loginUser(userName, password);
+    await loginPage.loginUser(loginUserData);
     // const title = await loginPage.title();
 
     //Assert
