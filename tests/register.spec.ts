@@ -1,6 +1,7 @@
 import { LoginPage } from '../src/pages/login.page';
 import { RegisterPage } from '../src/pages/register.page';
 import { WelcomePage } from '../src/pages/welcome.page';
+import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 
 test.describe('Verify register page', () => {
@@ -10,10 +11,13 @@ test.describe('Verify register page', () => {
     //Arrange
     const registerPage = new RegisterPage(page);
     const loginPage = new LoginPage(page);
-    const userFirstName = 'Janina';
-    const userSecondName = 'Nowak';
-    const userEmail = `jntest${new Date().getTime()}@test.test1`;
-    const userPassword = 'testtest234';
+    const userFirstName = faker.person.firstName();
+    const userSecondName = faker.person.lastName();
+    const userEmail = faker.internet.email({
+      firstName: userFirstName,
+      lastName: userSecondName,
+    });
+    const userPassword = faker.internet.password();
     await registerPage.goto();
 
     //Act
