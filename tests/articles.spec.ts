@@ -1,7 +1,5 @@
-import {
-  randomArticleData,
-  randomArticleDataWithSpecifiedValues,
-} from '../src/factories/article.factory';
+import { randomArticleData } from '../src/factories/article.factory';
+import { AddArticleModel } from '../src/models/article.model';
 import { ArticlePage } from '../src/pages/article.page';
 import { ArticlesPage } from '../src/pages/articles.page';
 import { LoginPage } from '../src/pages/login.page';
@@ -10,87 +8,58 @@ import { AddArticleView } from '../src/views/add-article.view';
 import { expect, test } from '@playwright/test';
 
 test.describe('Verify articles', () => {
-  test('Create new article @GAD-R02-01', async ({ page }) => {
-    //Arrange
-    const loginPage = new LoginPage(page);
+  let loginPage: LoginPage;
+  let articlesPage: ArticlesPage;
+  let addArticleView: AddArticleView;
+  let articleData: AddArticleModel;
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    articlesPage = new ArticlesPage(page);
+    addArticleView = new AddArticleView(page);
+    articleData = randomArticleData();
+
     await loginPage.goto();
     await loginPage.loginUser(testUser1);
-
-    const articlesPage = new ArticlesPage(page);
     await articlesPage.goto();
     await articlesPage.addArticleButton.click();
+    await expect.soft(addArticleView.header).toBeVisible();
+  });
+  test('Create new article @GAD-R02-01', async ({ page }) => {
+    //Arrange
+    const articlePage = new ArticlePage(page);
 
     //Act
-    const addArticleView = new AddArticleView(page);
-    await expect.soft(addArticleView.header).toBeVisible();
-
-    const articleData = randomArticleData();
-
     await addArticleView.createArticle(articleData);
 
     //Assert
-    const articlePage = new ArticlePage(page);
     await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
     await expect
       .soft(articlePage.articleBody)
       .toHaveText(articleData.body, { useInnerText: true });
   });
 
-  test('Article can not be created with empty title @GAD-R02-01', async ({
-    page,
-  }) => {
+  test('Article can not be created with empty title @GAD-R02-01', async () => {
     //Arrange
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-    await loginPage.loginUser(testUser1);
-
-    const articlesPage = new ArticlesPage(page);
-    await articlesPage.goto();
-    await articlesPage.addArticleButton.click();
+    const alertPopupText = 'Article was not created';
+    articleData.title = '';
 
     //Act
-    const addArticleView = new AddArticleView(page);
-    await expect.soft(addArticleView.header).toBeVisible();
-
-    // const articleDataWithEmptyTitle = randomArticleData();
-    const articleDataWithEmptyTitle = randomArticleDataWithSpecifiedValues(
-      '',
-      undefined,
-    );
-
-    await addArticleView.createArticle(articleDataWithEmptyTitle);
+    await addArticleView.createArticle(articleData);
 
     //Assert
-    const alertPopupText = 'Article was not created';
     await expect(addArticleView.alertPopup).toHaveText(alertPopupText);
   });
 
-  test('Article can not be created with empty body @GAD-R02-01', async ({
-    page,
-  }) => {
+  test('Article can not be created with empty body @GAD-R02-01', async () => {
     //Arrange
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-    await loginPage.loginUser(testUser1);
-
-    const articlesPage = new ArticlesPage(page);
-    await articlesPage.goto();
-    await articlesPage.addArticleButton.click();
+    const alertPopupText = 'Article was not created';
+    articleData.body = '';
 
     //Act
-    const addArticleView = new AddArticleView(page);
-    await expect.soft(addArticleView.header).toBeVisible();
-
-    // const articleDataWithEmptyTitle = randomArticleData();
-    const articleDataWithEmptyBody = randomArticleDataWithSpecifiedValues(
-      undefined,
-      '',
-    );
-
-    await addArticleView.createArticle(articleDataWithEmptyBody);
+    await addArticleView.createArticle(articleData);
 
     //Assert
-    const alertPopupText = 'Article was not created';
     await expect(addArticleView.alertPopup).toHaveText(alertPopupText);
   });
 });
