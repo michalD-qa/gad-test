@@ -9,3 +9,17 @@ export function randomArticleData(): AddArticleModel {
 
   return newArticle;
 }
+
+export function randomArticleDataWithSpecifiedValues(
+  title?: string,
+  body?: string,
+): AddArticleModel {
+  const newArticleData = randomArticleData();
+  if (typeof title != 'undefined') {
+    newArticleData.title = title;
+  }
+  if (typeof body != 'undefined') {
+    newArticleData.body = body;
+  }
+  return newArticleData;
+}
