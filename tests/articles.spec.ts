@@ -1,5 +1,4 @@
 import { randomArticleData } from '../src/factories/article.factory';
-import { AddArticleModel } from '../src/models/article.model';
 import { ArticlePage } from '../src/pages/article.page';
 import { ArticlesPage } from '../src/pages/articles.page';
 import { LoginPage } from '../src/pages/login.page';
@@ -11,13 +10,11 @@ test.describe('Verify articles', () => {
   let loginPage: LoginPage;
   let articlesPage: ArticlesPage;
   let addArticleView: AddArticleView;
-  let articleData: AddArticleModel;
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     articlesPage = new ArticlesPage(page);
     addArticleView = new AddArticleView(page);
-    articleData = randomArticleData();
 
     await loginPage.goto();
     await loginPage.loginUser(testUser1);
@@ -27,6 +24,7 @@ test.describe('Verify articles', () => {
   });
   test('Create new article @GAD-R02-01', async ({ page }) => {
     //Arrange
+    const articleData = randomArticleData();
     const articlePage = new ArticlePage(page);
 
     //Act
@@ -41,6 +39,7 @@ test.describe('Verify articles', () => {
 
   test('Article can not be created with empty title @GAD-R02-01', async () => {
     //Arrange
+    const articleData = randomArticleData();
     const alertPopupText = 'Article was not created';
     articleData.title = '';
 
@@ -53,6 +52,7 @@ test.describe('Verify articles', () => {
 
   test('Article can not be created with empty body @GAD-R02-01', async () => {
     //Arrange
+    const articleData = randomArticleData();
     const alertPopupText = 'Article was not created';
     articleData.body = '';
 
@@ -61,5 +61,33 @@ test.describe('Verify articles', () => {
 
     //Assert
     await expect(addArticleView.alertPopup).toHaveText(alertPopupText);
+  });
+  test('reject creating article with title exceeding 128 signs @GAD-R04-01', async () => {
+    //Arrange
+    const alertPopupText = 'Article was not created';
+    const articleData = randomArticleData(129);
+
+    //Act
+    await addArticleView.createArticle(articleData);
+
+    //Assert
+    await expect(addArticleView.alertPopup).toHaveText(alertPopupText);
+  });
+
+  test('Create article with title with 128 signs @GAD-R04-01', async ({
+    page,
+  }) => {
+    //Arrange
+    const articleData = randomArticleData(128);
+    const articlePage = new ArticlePage(page);
+
+    //Act
+    await addArticleView.createArticle(articleData);
+
+    //Assert
+    await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
+    await expect
+      .soft(articlePage.articleBody)
+      .toHaveText(articleData.body, { useInnerText: true });
   });
 });
