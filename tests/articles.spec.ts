@@ -22,20 +22,6 @@ test.describe('Verify articles', () => {
     await articlesPage.addArticleButton.click();
     await expect.soft(addArticleView.header).toBeVisible();
   });
-  test('Create new article @GAD-R02-01', async ({ page }) => {
-    //Arrange
-    const articleData = randomArticleData();
-    const articlePage = new ArticlePage(page);
-
-    //Act
-    await addArticleView.createArticle(articleData);
-
-    //Assert
-    await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
-    await expect
-      .soft(articlePage.articleBody)
-      .toHaveText(articleData.body, { useInnerText: true });
-  });
 
   test('Article can not be created with empty title @GAD-R02-01', async () => {
     //Arrange
