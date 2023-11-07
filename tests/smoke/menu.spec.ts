@@ -17,7 +17,7 @@ test.describe('Verify menu main buttons', () => {
     await articlesPage.mainMenu.commentsButton.click();
 
     //Assert
-    const title = await commentsPage.title();
+    const title = await commentsPage.getTitle();
     expect(title).toContain('Comments');
   });
   test('Articles button navigates to articles page @GAD-R01-03', async ({
@@ -33,7 +33,7 @@ test.describe('Verify menu main buttons', () => {
     await commentsPage.mainMenu.articlesButton.click();
 
     //Assert
-    const title = await articlesPage.title();
+    const title = await articlesPage.getTitle();
     expect(title).toContain('Articles');
   });
 
@@ -49,7 +49,7 @@ test.describe('Verify menu main buttons', () => {
     await articlesPage.mainMenu.homePageButton.click();
 
     //Assert
-    const title = await homePage.title();
+    const title = await homePage.getTitle();
     expect(title).toContain('GAD');
   });
 });
