@@ -20,7 +20,7 @@ test.describe('Verify articles', () => {
     await loginPage.loginUser(testUser1);
     await articlesPage.goto();
     await articlesPage.addArticleButton.click();
-    await expect.soft(addArticleView.header).toBeVisible();
+    await expect.soft(addArticleView.addNewHeader).toBeVisible();
   });
 
   test('Article can not be created with empty title @GAD-R02-01', async () => {
