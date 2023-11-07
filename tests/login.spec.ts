@@ -33,9 +33,8 @@ test.describe('Verify login page', () => {
       userPassword: 'incorrectPassword',
     };
 
-    await loginPage.goto();
-
     //Act
+    await loginPage.goto();
     await loginPage.loginUser(loginUserData);
 
     //Assert
