@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker/locale/en';
 export function generateRandomUserData(): RegisterUserModel {
   const registerUserData: RegisterUserModel = {
     userFirstName: faker.person.firstName().replace(/[^A-Za-z]g/, ''),
-    userLastName: faker.person.lastName(),
+    userLastName: faker.person.lastName().replace(/[^A-Za-z]g/, ''),
     userEmail: '',
     userPassword: faker.internet.password(),
   };
