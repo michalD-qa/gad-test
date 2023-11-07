@@ -9,6 +9,7 @@ test.describe('Verify login page', () => {
     page,
   }) => {
     //Arrange
+    const expectedWelcomeTitle = 'Welcome';
     const loginPage = new LoginPage(page);
     const welcomePage = new WelcomePage(page);
 
@@ -18,12 +19,13 @@ test.describe('Verify login page', () => {
     const title = await welcomePage.getTitle();
 
     //Assert
-    expect(title).toContain('Welcome');
+    expect(title).toContain(expectedWelcomeTitle);
   });
   test("User can't login with invalid email and password @login @GAD-R02-01", async ({
     page,
   }) => {
     //Arrange
+    const expectedLoginErrorText = 'Invalid username or password';
     const loginPage = new LoginPage(page);
 
     const loginUserData: LoginUserModel = {
@@ -35,11 +37,8 @@ test.describe('Verify login page', () => {
 
     //Act
     await loginPage.loginUser(loginUserData);
-    // const title = await loginPage.title();
 
     //Assert
-    await expect(loginPage.loginErrorText).toHaveText(
-      'Invalid username or password',
-    );
+    await expect(loginPage.loginErrorText).toHaveText(expectedLoginErrorText);
   });
 });
