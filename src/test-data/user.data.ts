@@ -1,6 +1,7 @@
+import { USER_EMAIL, USER_PASSWORD } from '../global-setup';
 import { LoginUserModel } from '../models/user.model';
 
 export const testUser1: LoginUserModel = {
-  userEmail: (process.env.USER_EMAIL as string) ?? 'NOT_SET',
-  userPassword: (process.env.USER_PASSWORD as string) ?? 'NOT_SET',
+  userEmail: USER_EMAIL,
+  userPassword: USER_PASSWORD,
 };
