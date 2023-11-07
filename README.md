@@ -51,3 +51,9 @@ Console, powershell, grep, --%
 -
  https://jaktestowac.pl/lesson/pw2s02l03/
 ```
+
+```
+ES Lint i ts_config gryzące się werjse. Page na czerwono podkreślony
+-
+ https://jaktestowac.pl/lesson/pw2s05l04/
+```
