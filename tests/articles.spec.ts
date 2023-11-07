@@ -1,4 +1,4 @@
-import { randomArticleData } from '../src/factories/article.factory';
+import { generateRandomArticleData } from '../src/factories/article.factory';
 import { ArticlePage } from '../src/pages/article.page';
 import { ArticlesPage } from '../src/pages/articles.page';
 import { LoginPage } from '../src/pages/login.page';
@@ -25,7 +25,7 @@ test.describe('Verify articles', () => {
 
   test('Article can not be created with empty title @GAD-R02-01', async () => {
     //Arrange
-    const articleData = randomArticleData();
+    const articleData = generateRandomArticleData();
     const alertPopupText = 'Article was not created';
     articleData.title = '';
 
@@ -38,7 +38,7 @@ test.describe('Verify articles', () => {
 
   test('Article can not be created with empty body @GAD-R02-01', async () => {
     //Arrange
-    const articleData = randomArticleData();
+    const articleData = generateRandomArticleData();
     const alertPopupText = 'Article was not created';
     articleData.body = '';
 
@@ -51,7 +51,7 @@ test.describe('Verify articles', () => {
   test('reject creating article with title exceeding 128 signs @GAD-R04-01', async () => {
     //Arrange
     const alertPopupText = 'Article was not created';
-    const articleData = randomArticleData(129);
+    const articleData = generateRandomArticleData(129);
 
     //Act
     await addArticleView.createArticle(articleData);
@@ -64,7 +64,7 @@ test.describe('Verify articles', () => {
     page,
   }) => {
     //Arrange
-    const articleData = randomArticleData(128);
+    const articleData = generateRandomArticleData(128);
     const articlePage = new ArticlePage(page);
 
     //Act

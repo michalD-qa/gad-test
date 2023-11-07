@@ -1,4 +1,4 @@
-import { randomUserData } from '../src/factories/user.factory';
+import { generateRandomUserData } from '../src/factories/user.factory';
 import { RegisterUserModel } from '../src/models/user.model';
 import { LoginPage } from '../src/pages/login.page';
 import { RegisterPage } from '../src/pages/register.page';
@@ -11,7 +11,7 @@ test.describe('Verify register page', () => {
 
   test.beforeEach(async ({ page }) => {
     registerPage = new RegisterPage(page);
-    registerUserData = randomUserData();
+    registerUserData = generateRandomUserData();
     await registerPage.goto();
   });
   test('User can register with mandatory fields and login @GAD-R03-01 @GAD-R03-02 @GAD-R03-03', async ({
