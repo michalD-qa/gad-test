@@ -1,4 +1,5 @@
 import { generateRandomArticleData } from '../../src/factories/article.factory';
+import { generateRandomComment } from '../../src/factories/comment.factory';
 import { AddArticleModel } from '../../src/models/article.model';
 import { ArticlePage } from '../../src/pages/article.page';
 import { ArticlesPage } from '../../src/pages/articles.page';
@@ -37,21 +38,23 @@ test.describe('Create, verify and delete comment', () => {
   // eslint-disable-next-line playwright/expect-expect
   test('Create new comment @GAD-R06-01', async () => {
     //Arrange
-    const commentText = 'My Comment Text';
+    const newCommentData = generateRandomComment();
 
     //Act
     await articlePage.addCommentButton.click();
-    await addCommentView.createComment(commentText);
+    await addCommentView.createComment(newCommentData);
 
     //Assert
     await expect(addCommentView.alertPopup).toHaveText('Comment was created');
 
     //verify comment
     //Act
-    const articleComment = await articlePage.getArticleComment(commentText);
-    await expect(articleComment.body).toHaveText(commentText);
+    const articleComment = await articlePage.getArticleComment(
+      newCommentData.body,
+    );
+    await expect(articleComment.body).toHaveText(newCommentData.body);
     await articleComment.link.click();
 
-    await expect(commentPage.commentBody).toHaveText(commentText);
+    await expect(commentPage.commentBody).toHaveText(newCommentData.body);
   });
 });
