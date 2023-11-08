@@ -57,3 +57,11 @@ ES Lint i ts_config gryzące się werjse. Page na czerwono podkreślony
 -
  https://jaktestowac.pl/lesson/pw2s05l04/
 ```
+
+```
+Locators
+-
+ commentContainer.locator(':text("comment:) + span'),
+ $$("[id^='gotoComment']")
+
+```
