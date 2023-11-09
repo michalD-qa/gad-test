@@ -23,7 +23,7 @@ test.describe('Verify articles', () => {
     await expect.soft(addArticleView.addNewHeader).toBeVisible();
   });
 
-  test('Article can not be created with empty title @GAD-R02-01', async () => {
+  test('Article can not be created with empty title @GAD-R02-01 @logged', async () => {
     //Arrange
     const articleData = generateRandomArticleData();
     const alertPopupText = 'Article was not created';
