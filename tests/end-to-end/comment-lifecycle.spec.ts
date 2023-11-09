@@ -8,6 +8,7 @@ import { LoginPage } from '../../src/pages/login.page';
 import { testUser1 } from '../../src/test-data/user.data';
 import { AddArticleView } from '../../src/views/add-article.view';
 import { AddCommentView } from '../../src/views/add-comment.view';
+import { EditCommentView } from '../../src/views/edit-comment.view';
 import { expect, test } from '@playwright/test';
 
 test.describe('Create, verify and delete comment', () => {
@@ -18,6 +19,7 @@ test.describe('Create, verify and delete comment', () => {
   let articlePage: ArticlePage;
   let addCommentView: AddCommentView;
   let commentPage: CommentPage;
+  let editCommentView: EditCommentView;
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
@@ -26,6 +28,7 @@ test.describe('Create, verify and delete comment', () => {
     articlePage = new ArticlePage(page);
     addCommentView = new AddCommentView(page);
     commentPage = new CommentPage(page);
+    editCommentView = new EditCommentView(page);
 
     articleData = generateRandomArticleData();
     await loginPage.goto();
@@ -39,6 +42,8 @@ test.describe('Create, verify and delete comment', () => {
   test('Create new comment @GAD-R06-01', async () => {
     //Arrange
     const newCommentData = generateRandomComment();
+    const updatedCommentData = generateRandomComment();
+    const expectedCommentEditedPopup = 'Comment was updated';
 
     //Act
     await articlePage.addCommentButton.click();
@@ -56,5 +61,21 @@ test.describe('Create, verify and delete comment', () => {
     await articleComment.link.click();
 
     await expect(commentPage.commentBody).toHaveText(newCommentData.body);
+
+    //Edit comment
+    await commentPage.editButton.click();
+    await editCommentView.updateComment(updatedCommentData);
+
+    await expect(commentPage.commentBody).toHaveText(updatedCommentData.body);
+    await expect(commentPage.alertPopup).toHaveText(expectedCommentEditedPopup);
+
+    await commentPage.returnToArticleLink.click();
+
+    const updatedArticleComment = await articlePage.getArticleComment(
+      updatedCommentData.body,
+    );
+    await expect(updatedArticleComment.body).toHaveText(
+      updatedCommentData.body,
+    );
   });
 });
