@@ -1,6 +1,7 @@
 import { generateRandomArticleData } from '../../src/factories/article.factory';
 import { generateRandomComment } from '../../src/factories/comment.factory';
 import { AddArticleModel } from '../../src/models/article.model';
+import { AddCommentModel } from '../../src/models/comment.model';
 import { ArticlePage } from '../../src/pages/article.page';
 import { ArticlesPage } from '../../src/pages/articles.page';
 import { CommentPage } from '../../src/pages/comment.page';
@@ -39,7 +40,7 @@ test.describe('Create, verify and delete comment', () => {
   });
 
   // eslint-disable-next-line playwright/expect-expect
-  test('Operate on comment @GAD-R06-01', async () => {
+  test('Operate on comment @GAD-R06-01 @GAD-R06-02 @GAD-R06-03', async () => {
     //Create new comment
     //Arrange
     const newCommentData = generateRandomComment();
@@ -96,6 +97,24 @@ test.describe('Create, verify and delete comment', () => {
       await expect(updatedArticleComment.body).toHaveText(
         updatedCommentData.body,
       );
+    });
+
+    let secondCommentData: AddCommentModel;
+    await test.step('create and verify second comment', async () => {
+      //Arrange
+      secondCommentData = generateRandomComment();
+
+      //Act
+      await articlePage.addCommentButton.click();
+      await addCommentView.createComment(secondCommentData);
+
+      //Assert
+      const articleComment = await articlePage.getArticleComment(
+        secondCommentData.body,
+      );
+      await expect(articleComment.body).toHaveText(secondCommentData.body);
+      await articleComment.link.click();
+      await expect(commentPage.commentBody).toHaveText(secondCommentData.body);
     });
   });
 });
