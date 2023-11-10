@@ -65,3 +65,12 @@ Locators
  $$("[id^='gotoComment']")
 
 ```
+
+```
+Mozna miec folder w gicie i plik pusty. gitkeep
+-
+ plik .gitignore tak musialby wygladac
+ tmp/*
+ !tmp/.gitkeep
+
+```
