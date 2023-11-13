@@ -1,5 +1,5 @@
-import { BASE_URL } from '@_src/env.config';
 import { defineConfig, devices } from '@playwright/test';
+import { BASE_URL } from 'config/env.config';
 import * as path from 'path';
 
 /**
@@ -9,7 +9,7 @@ export const STORAGE_STATE = path.join(__dirname, 'tmp/session.json');
 
 export default defineConfig({
   testDir: './tests',
-  globalSetup: 'src/global-setup.ts',
+  globalSetup: 'config/global.setup.ts',
   timeout: 20_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
