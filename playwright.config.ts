@@ -42,7 +42,7 @@ export default defineConfig({
       dependencies: ['setup'],
       use: {
         storageState: STORAGE_STATE,
-        ...devices['Desktop Firefox'],
+        ...devices['Desktop Chrome'],
       },
     },
   ],
