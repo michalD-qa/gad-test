@@ -74,3 +74,5 @@ Mozna miec folder w gicie i plik pusty. gitkeep
  !tmp/.gitkeep
 
 ```
+
+"typescript.preferences.importModuleSpecifier": "non-relative" -> ustawienia dla vs code
