@@ -10,7 +10,7 @@ export const STORAGE_STATE = path.join(__dirname, 'tmp/session.json');
 export default defineConfig({
   testDir: './tests',
   globalSetup: 'src/global-setup.ts',
-  timeout: 10_000,
+  timeout: 20_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
   retries: 0,
@@ -27,20 +27,22 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
+      name: 'chromium-non-logged',
       grepInvert: /@logged/,
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'setup',
       testMatch: '*.setup.ts',
+      use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'logged',
+      name: 'chromium-logged',
       grep: /@logged/,
       dependencies: ['setup'],
       use: {
         storageState: STORAGE_STATE,
+        ...devices['Desktop Firefox'],
       },
     },
   ],
