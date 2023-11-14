@@ -3,9 +3,7 @@ import { generateRandomComment } from '@_src/factories/comment.factory';
 import { AddArticleModel } from '@_src/models/article.model';
 import { ArticlePage } from '@_src/pages/article.page';
 import { ArticlesPage } from '@_src/pages/articles.page';
-import { CommentPage } from '@_src/pages/comment.page';
 import { AddArticleView } from '@_src/views/add-article.view';
-import { AddCommentView } from '@_src/views/add-comment.view';
 import { EditCommentView } from '@_src/views/edit-comment.view';
 import { expect, test } from '@playwright/test';
 
@@ -14,16 +12,14 @@ test.describe('Create, verify and delete comment', () => {
   let addArticleView: AddArticleView;
   let articleData: AddArticleModel;
   let articlePage: ArticlePage;
-  let addCommentView: AddCommentView;
-  let commentPage: CommentPage;
+  // let addCommentView: AddCommentView;
   let editCommentView: EditCommentView;
 
   test.beforeEach(async ({ page }) => {
     articlesPage = new ArticlesPage(page);
     addArticleView = new AddArticleView(page);
     articlePage = new ArticlePage(page);
-    addCommentView = new AddCommentView(page);
-    commentPage = new CommentPage(page);
+    // addCommentView = new AddCommentView(page);
     editCommentView = new EditCommentView(page);
 
     articleData = generateRandomArticleData();
@@ -32,7 +28,6 @@ test.describe('Create, verify and delete comment', () => {
     await addArticleView.createArticle(articleData);
   });
 
-  // eslint-disable-next-line playwright/expect-expect
   test('Operate on comment @GAD-R06-01 @GAD-R06-02 @GAD-R06-03  @logged', async () => {
     //Create new comment
     //Arrange
@@ -44,7 +39,7 @@ test.describe('Create, verify and delete comment', () => {
       const expectedCommentCreatedPopup = 'Comment was created';
 
       //Act
-      await articlePage.addCommentButton.click();
+      const addCommentView = await articlePage.clickAddCommentButton();
       await addCommentView.createComment(newCommentData);
 
       //Assert
@@ -53,16 +48,20 @@ test.describe('Create, verify and delete comment', () => {
         .toHaveText(expectedCommentCreatedPopup);
     });
 
-    await test.step('verify comment', async () => {
+    const commentPage = await test.step('verify comment', async () => {
       //Act
       const articleComment = await articlePage.getArticleComment(
         newCommentData.body,
       );
       await expect(articleComment.body).toHaveText(newCommentData.body);
-      await articleComment.link.click();
+      // await articleComment.link.click();
+      const commentPage = await articlePage.clickCommentLink(
+        articleComment.link,
+      );
 
       //Assert
       await expect(commentPage.commentBody).toHaveText(newCommentData.body);
+      return commentPage;
     });
 
     await test.step('update comment', async () => {
@@ -100,7 +99,7 @@ test.describe('Create, verify and delete comment', () => {
       const expectedCommentCreatedPopup = 'Comment was created';
 
       //Act
-      await articlePage.addCommentButton.click();
+      const addCommentView = await articlePage.clickAddCommentButton();
       await addCommentView.createComment(newCommentData);
 
       //Assert
@@ -112,7 +111,7 @@ test.describe('Create, verify and delete comment', () => {
     await test.step('create and verify second comment', async () => {
       const secondCommentData = generateRandomComment();
       await test.step('create second comment', async () => {
-        await articlePage.addCommentButton.click();
+        const addCommentView = await articlePage.clickAddCommentButton();
         await addCommentView.createComment(secondCommentData);
       });
 
@@ -121,7 +120,9 @@ test.describe('Create, verify and delete comment', () => {
           secondCommentData.body,
         );
         await expect(articleComment.body).toHaveText(secondCommentData.body);
-        await articleComment.link.click();
+        const commentPage = await articlePage.clickCommentLink(
+          articleComment.link,
+        );
         await expect(commentPage.commentBody).toHaveText(
           secondCommentData.body,
         );
