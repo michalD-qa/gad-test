@@ -1,6 +1,5 @@
 import { generateRandomUserData } from '@_src/factories/user.factory';
 import { RegisterUserModel } from '@_src/models/user.model';
-import { LoginPage } from '@_src/pages/login.page';
 import { RegisterPage } from '@_src/pages/register.page';
 import { expect, test } from '@playwright/test';
 
@@ -13,17 +12,14 @@ test.describe('Verify register page', () => {
     registerUserData = generateRandomUserData();
     await registerPage.goto();
   });
-  test('User can register with mandatory fields and login @GAD-R03-01 @GAD-R03-02 @GAD-R03-03', async ({
-    page,
-  }) => {
+  test('User can register with mandatory fields and login @GAD-R03-01 @GAD-R03-02 @GAD-R03-03', async ({}) => {
     //Arrange
     const expectedAlertText = 'User created';
     const expectedLoginTitle = 'Login';
     const expectedWelcomeTitle = 'Welcome';
-    const loginPage = new LoginPage(page);
 
     //Act
-    await registerPage.registerUser(registerUserData);
+    const loginPage = await registerPage.registerUser(registerUserData);
 
     //Assert
     await expect(registerPage.alertPopUp).toHaveText(expectedAlertText);
