@@ -3,29 +3,23 @@ import { generateRandomComment } from '@_src/factories/comment.factory';
 import { AddArticleModel } from '@_src/models/article.model';
 import { ArticlePage } from '@_src/pages/article.page';
 import { ArticlesPage } from '@_src/pages/articles.page';
-import { AddArticleView } from '@_src/views/add-article.view';
 import { EditCommentView } from '@_src/views/edit-comment.view';
 import { expect, test } from '@playwright/test';
 
 test.describe('Create, verify and delete comment', () => {
   let articlesPage: ArticlesPage;
-  let addArticleView: AddArticleView;
   let articleData: AddArticleModel;
   let articlePage: ArticlePage;
-  // let addCommentView: AddCommentView;
   let editCommentView: EditCommentView;
 
   test.beforeEach(async ({ page }) => {
     articlesPage = new ArticlesPage(page);
-    addArticleView = new AddArticleView(page);
-    articlePage = new ArticlePage(page);
-    // addCommentView = new AddCommentView(page);
     editCommentView = new EditCommentView(page);
 
     articleData = generateRandomArticleData();
     await articlesPage.goto();
-    await articlesPage.addArticleButton.click();
-    await addArticleView.createArticle(articleData);
+    const addArticleView = await articlesPage.clickAddArticleButton();
+    articlePage = await addArticleView.createArticle(articleData);
   });
 
   test('Operate on comment @GAD-R06-01 @GAD-R06-02 @GAD-R06-03  @logged', async () => {
