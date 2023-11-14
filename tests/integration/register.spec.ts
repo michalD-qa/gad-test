@@ -2,7 +2,6 @@ import { generateRandomUserData } from '@_src/factories/user.factory';
 import { RegisterUserModel } from '@_src/models/user.model';
 import { LoginPage } from '@_src/pages/login.page';
 import { RegisterPage } from '@_src/pages/register.page';
-import { WelcomePage } from '@_src/pages/welcome.page';
 import { expect, test } from '@playwright/test';
 
 test.describe('Verify register page', () => {
@@ -22,7 +21,6 @@ test.describe('Verify register page', () => {
     const expectedLoginTitle = 'Login';
     const expectedWelcomeTitle = 'Welcome';
     const loginPage = new LoginPage(page);
-    const welcomePage = new WelcomePage(page);
 
     //Act
     await registerPage.registerUser(registerUserData);
@@ -34,7 +32,7 @@ test.describe('Verify register page', () => {
     expect.soft(titleLogin).toContain(expectedLoginTitle);
 
     //Assert test login
-    await loginPage.loginUser({
+    const welcomePage = await loginPage.loginUser({
       userEmail: registerUserData.userEmail,
       userPassword: registerUserData.userPassword,
     });
