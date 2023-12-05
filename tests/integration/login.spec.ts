@@ -1,7 +1,17 @@
 import { LoginUserModel } from '@_src/models/user.model';
 import { LoginPage } from '@_src/pages/login.page';
 import { testUser1 } from '@_src/test-data/user.data';
-import { expect, test } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
+
+type newFixture = {
+  loginPageNew: LoginPage;
+};
+
+const test = base.extend<newFixture>({
+  loginPageNew: async ({ page }, use) => {
+    await use(new LoginPage(page));
+  },
+});
 
 test.describe('Verify login page', () => {
   test('User can login with proper email and password @login @GAD-R02-01', async ({
