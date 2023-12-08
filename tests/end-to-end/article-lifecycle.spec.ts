@@ -1,4 +1,3 @@
-import { generateRandomArticleData } from '@_src/factories/article.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
 import { AddArticleModel } from '@_src/models/article.model';
 
@@ -6,13 +5,12 @@ test.describe.configure({ mode: 'serial' });
 test.describe('Create, verify and delete article', () => {
   let articleData: AddArticleModel;
 
-  test('Create new article @GAD-R04-01 @logged', async ({ addArticleView }) => {
-    //Arrange
-    articleData = generateRandomArticleData();
-    await expect.soft(addArticleView.addNewHeader).toBeVisible();
-
+  test('Create new article @GAD-R04-01 @logged', async ({
+    createRandomArticle,
+  }) => {
     //Act
-    const articlePage = await addArticleView.createArticle(articleData);
+    const articlePage = createRandomArticle.articlePage;
+    articleData = createRandomArticle.articleData;
 
     //Assert
     await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
