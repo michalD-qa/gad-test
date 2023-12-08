@@ -1,18 +1,16 @@
 import { generateRandomUserData } from '@_src/factories/user.factory';
+import { expect, test } from '@_src/fixtures/merge.fixture';
 import { RegisterUserModel } from '@_src/models/user.model';
-import { RegisterPage } from '@_src/pages/register.page';
-import { expect, test } from '@playwright/test';
 
 test.describe('Verify register page', () => {
-  let registerPage: RegisterPage;
   let registerUserData: RegisterUserModel;
 
-  test.beforeEach(async ({ page }) => {
-    registerPage = new RegisterPage(page);
+  test.beforeEach(async () => {
     registerUserData = generateRandomUserData();
-    await registerPage.goto();
   });
-  test('User can register with mandatory fields and login @GAD-R03-01 @GAD-R03-02 @GAD-R03-03', async ({}) => {
+  test('User can register with mandatory fields and login @GAD-R03-01 @GAD-R03-02 @GAD-R03-03', async ({
+    registerPage,
+  }) => {
     //Arrange
     const expectedAlertText = 'User created';
     const expectedLoginTitle = 'Login';
@@ -36,7 +34,9 @@ test.describe('Verify register page', () => {
     expect.soft(titleWelcome).toContain(expectedWelcomeTitle);
   });
 
-  test('User can not register with incorrect data @GAD-R03-04', async () => {
+  test('User can not register with incorrect data @GAD-R03-04', async ({
+    registerPage,
+  }) => {
     //Arrange
     registerUserData.userEmail = '@$#';
     const expectedErrorText = 'Please provide a valid email address';
