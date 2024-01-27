@@ -4,17 +4,23 @@ import { expect, test } from '@_src/fixtures/merge.fixture';
 test.describe('Verify articles', () => {
   test('Article can not be created with empty title @GAD-R02-01 @logged', async ({
     addArticleView,
+    page,
   }) => {
     //Arrange
+
     const articleData = generateRandomArticleData();
-    const alertPopupText = 'Article was not created';
+    const expectedErrorMessage = 'Article was not created';
+    const expectedResponseCode = 422;
     articleData.title = '';
 
+    const responsePromise = page.waitForResponse('/api/articles');
     //Act
     await addArticleView.createArticle(articleData);
+    const response = await responsePromise;
 
     //Assert
-    await expect(addArticleView.alertPopup).toHaveText(alertPopupText);
+    await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
+    await expect(response.status()).toBe(expectedResponseCode);
   });
 
   test('Article can not be created with empty body @GAD-R02-01 @logged', async ({
