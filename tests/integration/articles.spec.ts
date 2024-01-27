@@ -1,3 +1,4 @@
+import { RESPONSE_TIMEOUT } from '@_pw-config';
 import { generateRandomArticleData } from '@_src/factories/article.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
 
@@ -13,7 +14,9 @@ test.describe('Verify articles', () => {
     const expectedResponseCode = 422;
     articleData.title = '';
 
-    const responsePromise = page.waitForResponse('/api/articles');
+    const responsePromise = page.waitForResponse('/api/articles', {
+      timeout: RESPONSE_TIMEOUT,
+    });
     //Act
     await addArticleView.createArticle(articleData);
     const response = await responsePromise;
