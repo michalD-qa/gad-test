@@ -13,7 +13,7 @@ test.describe('Verify articles', () => {
     const expectedErrorMessage = 'Article was not created';
     const expectedResponseCode = 422;
     articleData.title = '';
-    const responsePromise = waitForResponse(page, '/api/articles');
+    const responsePromise = waitForResponse({ page, url: '/api/articles' });
     //Act
     await addArticleView.createArticle(articleData);
     const response = await responsePromise;
@@ -33,7 +33,11 @@ test.describe('Verify articles', () => {
     const expectedResponseCode = 422;
     articleData.body = '';
 
-    const responsePromise = waitForResponse(page, '/api/articles', 'POST');
+    const responsePromise = waitForResponse({
+      page,
+      url: '/api/articles',
+      method: 'POST',
+    });
     //Act
     await addArticleView.createArticle(articleData);
     const response = await responsePromise;
@@ -52,7 +56,11 @@ test.describe('Verify articles', () => {
     const articleData = generateRandomArticleData(129);
     const expectedResponseCode = 422;
 
-    const responsePromise = waitForResponse(page, '/api/articles', 'POST');
+    const responsePromise = waitForResponse({
+      page,
+      url: '/api/articles',
+      method: 'POST',
+    });
     //Act
     await addArticleView.createArticle(articleData);
     const response = await responsePromise;
@@ -70,7 +78,11 @@ test.describe('Verify articles', () => {
     const articleData = generateRandomArticleData(128);
     const expectedResponseCode = 201;
 
-    const responsePromise = waitForResponse(page, '/api/articles', 'POST');
+    const responsePromise = waitForResponse({
+      page,
+      url: '/api/articles',
+      method: 'POST',
+    });
     //Act
     const articlePage = await addArticleView.createArticle(articleData);
     const response = await responsePromise;
@@ -90,7 +102,11 @@ test.describe('Verify articles', () => {
     //Arrange
     const articleData = generateRandomArticleData();
     const expectedResponseCode = 200;
-    const responsePromise = waitForResponse(page, '/api/articles', 'GET');
+    const responsePromise = waitForResponse({
+      page,
+      url: '/api/articles',
+      method: 'GET',
+    });
     //Act
     const articlePage = await addArticleView.createArticle(articleData);
     const response = await responsePromise;
