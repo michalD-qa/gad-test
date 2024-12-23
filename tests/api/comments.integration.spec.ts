@@ -1,7 +1,9 @@
-import { generateRandomArticleData } from '@_src/factories/article.factory';
 import { generateRandomComment } from '@_src/factories/comment.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
-import { getAuthorizationHeader } from '@_src/utils/api.util';
+import {
+  getAuthorizationHeader,
+  prepareArticlePayload,
+} from '@_src/utils/api.util';
 
 test.describe('Verify comments CRUD operations @crud @GAD-R08-04', () => {
   let articleId: number;
@@ -11,14 +13,7 @@ test.describe('Verify comments CRUD operations @crud @GAD-R08-04', () => {
     headers = await getAuthorizationHeader(request);
     const articlesUrl = '/api/articles';
 
-    const randomArticleData = generateRandomArticleData();
-    const articleData = {
-      title: randomArticleData.title,
-      body: randomArticleData.body,
-      date: '2024-01-30T15:44:31Z',
-      image:
-        '.\\data\\images\\256\\tester-app_9f26eff6-2390-4460-8829-81a9cbe21751.jpg',
-    };
+    const articleData = await prepareArticlePayload();
 
     const responseArticle = await request.post(articlesUrl, {
       headers,
@@ -43,7 +38,6 @@ test.describe('Verify comments CRUD operations @crud @GAD-R08-04', () => {
       date: '2024-01-30T15:44:31Z',
     };
 
-    // Arrange
     const response = await request.post(commentsUrl, {
       data: commentData,
     });
@@ -66,7 +60,6 @@ test.describe('Verify comments CRUD operations @crud @GAD-R08-04', () => {
       date: '2024-01-30T15:44:31Z',
     };
 
-    // Arrange
     const response = await request.post(commentsUrl, {
       headers,
       data: commentData,
