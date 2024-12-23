@@ -1,6 +1,6 @@
 import { generateRandomArticleData } from '@_src/factories/article.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
-import { testUser1 } from '@_src/test-data/user.data';
+import { getAuthorizationHeader } from '@_src/utils/api.util';
 
 test.describe('Verify articles CRUD operations @crud', () => {
   test('should not create an article without a logged-in user', async ({
@@ -43,20 +43,12 @@ test.describe('Verify articles CRUD operations @crud', () => {
     };
 
     //login user
-    const loginUrl = '/api/login';
-    const userData = {
-      email: testUser1.userEmail,
-      password: testUser1.userPassword,
-    };
-    const responseLogin = await request.post(loginUrl, { data: userData });
-    const responseLoginJson = await responseLogin.json();
+    const headers = await getAuthorizationHeader(request);
 
     //Act
     const responseArticle = await request.post(url, {
       data: articleData,
-      headers: {
-        Authorization: `Bearer ${await responseLoginJson.access_token}`,
-      },
+      headers,
     });
 
     //Assert
