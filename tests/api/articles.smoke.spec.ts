@@ -69,7 +69,9 @@ test.describe('Verify articles API endpoint @api', () => {
     await test.step('GET articles return at least on article', async () => {
       const article = responseJson[0];
       expectedRequiredFields.forEach((field) => {
-        expect.soft(article).toHaveProperty(field);
+        expect
+          .soft(article, `${field} property has not been found on element`)
+          .toHaveProperty(field);
       });
     });
   });
