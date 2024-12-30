@@ -6,8 +6,14 @@ export const apiLinks = {
   articlesUrl: '/api/articles',
   commentsUrl: '/api/comments',
 };
-interface Headers {
+export interface Headers {
   [key: string]: string;
+}
+interface ArticlePayload {
+  title: string;
+  body: string;
+  date: string;
+  image: string;
 }
 
 export async function getAuthorizationHeader(
@@ -27,13 +33,6 @@ export async function getAuthorizationHeader(
   return {
     Authorization: `Bearer ${responseLoginJson.access_token}`,
   };
-}
-
-interface ArticlePayload {
-  title: string;
-  body: string;
-  date: string;
-  image: string;
 }
 
 export async function prepareArticlePayload(): Promise<ArticlePayload> {
